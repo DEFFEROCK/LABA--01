@@ -1,9 +1,9 @@
 from src.toolkit.errors import ConverterError
 
-
+#операторы
 OPERATORS: tuple[str, ...] = ("+", "-", "*", "/")
 
-
+#приоритеты
 PRIORITY: dict[str, int] = {
     "+": 0 ,
     "-": 0 ,
@@ -11,6 +11,7 @@ PRIORITY: dict[str, int] = {
     "/": 1 ,
 }
 
+#величины длины
 LENTH_PART: dict[str, float] = {
     "mm" : 0.001 ,
     "cm" : 0.01,
@@ -20,24 +21,32 @@ LENTH_PART: dict[str, float] = {
 
 
 
-
+#величины массы
 WIDTH_PART: dict[str, float] = {
     "g" : 0.001 ,
     "kg" : 1.0 ,
 }
 
 
-
+#величины температуры
 TEMPERATURE_PART: dict[str, str] = {
     "c": "Цельсия",
     "f": "Фаренгейт",
     "k": "Кельвин",
 }
 
+#все части единиц измерения
 PARTS: list[dict] = [LENTH_PART, WIDTH_PART, TEMPERATURE_PART]
+
 
 def convert_temperature(value: float, from_unit: str, to_unit: str) -> float:
     from_unit, to_unit = from_unit.lower(), to_unit.lower()
+
+    '''
+    Функция convert_temperature() преобразует температуру между градусами Цельсия, Фаренгейта и Кельвина. 
+    Она приводит обозначения единиц измерения к нижнему регистру, выполняет соответствующие вычисления и возвращает результат типа float. 
+    Если исходная и целевая единицы совпадают, значение не изменяется.
+    '''
 
     #Единицы измерения одинаковые (C->C, F->F, K->K)
     if from_unit == to_unit:

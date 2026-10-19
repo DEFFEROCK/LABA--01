@@ -5,6 +5,13 @@ from src.toolkit.constans import OPERATORS, PRIORITY
 
 
 def tokenizastion(expression: str) -> list[str]:
+
+    '''
+    Функция tokenizastion() выполняет лексический анализ математического выражения:
+    разбивает строку на числа и операторы, пропускает пробелы и возвращает список токенов.
+    Если встречается недопустимый символ, возбуждает исключение CalculatorError с сообщением об ошибке.
+    '''
+
     tokens = []
     i = 0
     while i < len(expression):
@@ -27,6 +34,13 @@ def tokenizastion(expression: str) -> list[str]:
 
 
 def is_number(number:str) -> bool:
+
+    '''
+    Функция is_number() проверяет, является ли переданная строка числом.
+    Она пытается преобразовать строку в тип float:
+    если преобразование успешно, возвращает True, иначе — False.
+    '''
+
     try:
         float(number)
         return True
@@ -36,6 +50,14 @@ def is_number(number:str) -> bool:
 
 
 def validate_tokenization(expression: str) -> None:
+
+    '''
+    Функция validate_tokenization() проверяет корректность математического выражения после разбиения на токены.
+    Она выявляет отсутствие оператора между числами, повторяющиеся операторы умножения и деления,
+    пустое выражение, а также недопустимые операторы в начале или конце выражения.
+    При обнаружении ошибки возбуждает исключение CalculatorError.
+    '''
+
     expression = tokens = tokenizastion(expression)
     for i in range(len(tokens) - 1):
         if tokens[i].isdigit() and tokens[i+1].isdigit():
@@ -53,6 +75,13 @@ def validate_tokenization(expression: str) -> None:
 
 
 def _unar(tokens: list[str]) -> list[str]:
+
+    '''
+    Функция _unar() обрабатывает унарные операторы + и - в списке токенов.
+    Если знак стоит в начале выражения или после другого оператора,
+    она объединяет его со следующим числом в один токен и возвращает обновлённый список токенов.
+    '''
+
     i = 0
     while i < len(tokens):
         if tokens[i] in "+-":
@@ -64,6 +93,13 @@ def _unar(tokens: list[str]) -> list[str]:
 
 
 def to_rpn(tokens: list[str]) -> list[str]:
+
+    '''
+    Функция to_rpn() преобразует математическое выражение из списка токенов в обратную польскую нотацию (ОПН).
+    Числа добавляются в результирующий список, а операторы помещаются в стек с учётом их приоритета.
+    В конце оставшиеся операторы извлекаются из стека, и функция возвращает выражение в формате ОПН.
+    '''
+
     stack = []
     result = []
     for token in tokens:
@@ -79,6 +115,13 @@ def to_rpn(tokens: list[str]) -> list[str]:
 
 
 def solution(tokens: list[str]) -> float:
+
+    '''
+    Функция solution() вычисляет значение математического выражения, представленного в обратной польской нотации.
+    Она добавляет числа в стек, выполняет операции над двумя последними операндами с помощью apply_operations() и возвращает итоговый результат типа float.
+    Если операндов недостаточно или в стеке остаётся неверное количество значений, возбуждает RuntimeError.
+    '''
+
     result: list[float] = []
     for token in tokens:
         if is_number(token):
@@ -97,7 +140,13 @@ def solution(tokens: list[str]) -> float:
 
 
 def apply_operations(a: float, b:float, operator: str) -> float:
-    # Преобразуем строки в числа
+
+    '''
+    Функция apply_operations() выполняет арифметические операции сложения, вычитания, умножения и деления над двумя числами в зависимости от переданного оператора.
+    При делении на ноль или использовании неподдерживаемого оператора возбуждает исключение CalculatorError.
+    Возвращает результат типа float.
+    '''
+
     if  operator == '+':
         return a + b
     elif operator == '-':
@@ -113,6 +162,13 @@ def apply_operations(a: float, b:float, operator: str) -> float:
         raise CalculatorError(message="Неподдерживаемый оператор",code_error="invalid_operation")
 
 def evaluate(expression: str) -> float:
+
+    '''
+    Функция evaluate() выполняет полный цикл вычисления математического выражения:
+    проверяет корректность токенов, обрабатывает унарные знаки, преобразует выражение в обратную польскую нотацию и передаёт его на вычисление в solution().
+    Возвращает итоговый результат типа float.
+    '''
+
     tokens = validate_tokenization(expression)
     tokens = _unar(tokenizastion(expression))
     rpn_tokens = to_rpn(tokens)

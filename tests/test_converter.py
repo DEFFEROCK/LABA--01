@@ -19,6 +19,13 @@ from src.toolkit.errors import ConverterError
     ],
 )
 def test_converter_positive(value: float, from_unit: str, to_unit: str, final_result: float) -> None:
+
+    '''
+    Функция test_converter_positive() проверяет корректность преобразования единиц измерения. Она вызывает _converter() с исходным значением и единицами измерения, ё
+    а затем сравнивает полученный результат с ожидаемым final_result с помощью pytest.approx(),
+    учитывающего погрешность вычислений с плавающей точкой.
+    '''
+
     assert _converter(value, from_unit, to_unit) == pytest.approx(final_result)
 
 @pytest.mark.parametrize(
@@ -33,6 +40,13 @@ def test_converter_positive(value: float, from_unit: str, to_unit: str, final_re
     ],
 )
 def test_converter_negative(value: float, from_unit: str, to_unit: str, code_error: str) -> None:
+
+    '''
+    Функция test_converter_negative() проверяет обработку ошибок при преобразовании единиц измерения.
+    Она ожидает возникновение исключения ConverterError при вызове _converter() и проверяет,
+    соответствует ли код возникшей ошибки ожидаемому значению code_error.
+    '''
+
     with pytest.raises(ConverterError) as warn:
         _converter(value, from_unit, to_unit)
     assert warn.value.code_error == code_error

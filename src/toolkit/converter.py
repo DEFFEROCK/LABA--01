@@ -6,6 +6,13 @@ from typing import Any
 
 
 def check_part(unit: str) -> dict[str, Any]:
+
+    '''
+    Функция check_part() проверяет, к какой части единиц измерения относится переданная единица.
+    Она ищет совпадение в списке PARTS, возвращает найденную часть в виде словаря
+    и возбуждает исключение при отсутствии совпадений или неоднозначном разбиении.
+    '''
+
     parts = [part for part in PARTS if unit in part]
     if len(parts) > 1:
         raise RuntimeError("Неправильное исходное разбиение на части")
@@ -14,6 +21,15 @@ def check_part(unit: str) -> dict[str, Any]:
     return parts[0]
 
 def validation(value: float,from_unit: str, to_unit: str) -> dict[str, float]:
+
+    '''
+    Функция validation() проверяет корректность исходной и целевой единиц измерения,
+    преобразует значение в тип float и проверяет совместимость категорий единиц.
+    Также контролирует отрицательные значения и минимально допустимую температуру.
+    При обнаружении ошибок возбуждает исключение ConverterError,
+    а при успешной проверке возвращает словарь с информацией о части единиц измерения.
+    '''
+
     part_from = check_part(from_unit)
     part_to = check_part(to_unit)
     value = float(value)
@@ -28,6 +44,13 @@ def validation(value: float,from_unit: str, to_unit: str) -> dict[str, float]:
     return part_from
 
 def _converter(value: float, from_unit: str, to_unit: str) -> float:
+
+    '''
+    Функция _converter() выполняет преобразование значения между единицами измерения.
+    Она нормализует обозначения единиц, проверяет корректность данных с помощью validation(),
+    а затем выполняет пересчёт температуры или использует коэффициенты из словаря категории для других единиц. Возвращает результат типа float.
+    '''
+
     from_unit, to_unit = from_unit.lower().strip(), to_unit.lower().strip()
     value = float(value)
     part = validation(value, from_unit, to_unit)

@@ -21,6 +21,13 @@ from src.toolkit.errors import CalculatorError
     ],
 )
 def test_calculator_positive(expression: str, result: float) -> float:
+
+    '''
+    Функция test_calculator_positive() проверяет корректность вычисления математических выражений.
+    Она вызывает evaluate() и сравнивает полученный результат с ожидаемым значением result с помощью pytest.approx(),
+    допускающего небольшую погрешность при сравнении чисел с плавающей точкой.
+    '''
+
     assert evaluate(expression) == pytest.approx(result)
 
 @pytest.mark.parametrize(
@@ -35,6 +42,12 @@ def test_calculator_positive(expression: str, result: float) -> float:
     ],
 )
 def test_calculator_negative(expression: str, code_error: str) -> None:
+
+    '''
+    Функция test_calculator_negative() проверяет обработку некорректных математических выражений.
+    Она ожидает возникновение исключения CalculatorError при вызове evaluate() и проверяет, соответствует ли код ошибки code_error ожидаемому значению.
+    '''
+
     with pytest.raises(CalculatorError) as warn:
         evaluate(expression)
     assert warn.value.code_error == code_error

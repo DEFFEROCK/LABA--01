@@ -8,6 +8,14 @@ from src.toolkit.errors import ToolkitError
 
 
 def main() -> None:
+    '''
+    Функция main() реализует командный интерфейс калькулятора и конвертера.
+    Она обрабатывает аргументы командной строки,
+    выполняет вычисление выражения или преобразование значения и выводит результат.
+    При возникновении ошибки ToolkitError выводит сообщение в стандартный поток ошибок
+    и завершает программу с кодом 2.
+    '''
+
     parser = argparse.ArgumentParser(description="Калькулятор, конвертер")
     command = parser.add_subparsers(dest="command", required=True)
 
@@ -27,7 +35,7 @@ def main() -> None:
 
         else:
             result = _converter(args.VALUE, args.FROM, args.TO)
-        print(result)
+        print(f"{result:.2f}")
 
     except ToolkitError as e:
         print(e, file=sys.stderr)
